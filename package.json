@@ -1,0 +1,10 @@
+{
+  "name": "vessel-sample",
+  "version": "1.0.0",
+  "description": "Sample Vessel cargo",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/pack.js"
+  }
+}

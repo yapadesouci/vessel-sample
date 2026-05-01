@@ -1,0 +1,13 @@
+{
+  "id": "sample-dist",
+  "name": "Sample",
+  "version": "1.0.0",
+  "author": "yourname",
+  "description": "Sample cargo with storage, network, notifications, and clipboard test apps",
+  "apps": [
+    { "id": "storage-test",   "name": "Storage Test",       "permissions": ["storage"] },
+    { "id": "network-test",   "name": "Network Test",        "permissions": ["network"] },
+    { "id": "notif-test",     "name": "Notifications Test",  "permissions": ["notifications"] },
+    { "id": "clipboard-test", "name": "Clipboard Test",      "permissions": ["clipboard"] }
+  ]
+}

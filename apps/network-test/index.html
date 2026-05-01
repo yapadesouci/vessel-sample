@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Network Test</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #0d1117;
+      color: #e5e7eb;
+      font-family: -apple-system, sans-serif;
+    }
+    button {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #5865f2;
+      color: white;
+    }
+    button:hover { background: #4752c4; }
+    button:disabled { opacity: 0.5; cursor: default; }
+    #joke {
+      margin-top: 32px;
+      max-width: 400px;
+      text-align: center;
+      font-size: 14px;
+      color: #9ca3af;
+      min-height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <button id="joke-btn">Fetch a joke</button>
+  <p id="joke"></p>
+
+  <script type="module">
+    import { ready, http } from '../../sdk/index.js'
+
+    await ready()
+
+    const jokeEl = document.getElementById('joke')
+    const jokeBtn = document.getElementById('joke-btn')
+
+    jokeBtn.addEventListener('click', async () => {
+      jokeBtn.disabled = true
+      jokeEl.textContent = 'Loading…'
+      try {
+        const res = await http.fetch('https://icanhazdadjoke.com/', {
+          headers: { Accept: 'application/json' },
+        })
+        const data = JSON.parse(res.body)
+        jokeEl.textContent = data.joke
+      } catch (e) {
+        jokeEl.textContent = `Error: ${e.message}`
+      } finally {
+        jokeBtn.disabled = false
+      }
+    })
+  </script>
+</body>
+</html>

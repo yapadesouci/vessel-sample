@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Notification Test</title></head>
+<body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif">
+  <button id="btn" style="padding:12px 24px;font-size:16px;cursor:pointer">Send Notification</button>
+  <script type="module">
+    import { ready, notifications } from '../../sdk/index.js'
+    await ready()
+    document.getElementById('btn').onclick = async () => {
+      await notifications.send({ title: 'Hello!', body: 'Notification test worked.' })
+    }
+  </script>
+</body>
+</html>
