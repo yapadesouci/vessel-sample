@@ -2,7 +2,7 @@
   "id": "sample-dist",
   "name": "Sample",
   "version": "1.0.0",
-  "author": "yourname",
+  "author": "vessel",
   "description": "Sample cargo with storage, network, notifications, and clipboard test apps",
   "apps": [
     { "id": "storage-test",   "name": "Storage Test",       "permissions": ["storage"] },
