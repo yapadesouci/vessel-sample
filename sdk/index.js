@@ -110,6 +110,9 @@ function createNotifications(call) {
   return {
     send: async (payload) => {
       await call("notifications.send", payload);
+    },
+    schedule: async (items) => {
+      await call("notifications.schedule", { items });
     }
   };
 }
