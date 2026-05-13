@@ -4,70 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Storage Test</title>
+  <link rel="stylesheet" href="vessel://sdk.css" />
   <style>
-    body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: #0d1117;
-      color: #e5e7eb;
-      font-family: -apple-system, sans-serif;
-    }
-    h1 { font-size: 64px; margin: 0 0 24px; }
-    button {
-      padding: 10px 24px;
-      margin: 4px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #5865f2;
-      color: white;
-    }
-    button:hover { background: #4752c4; }
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .counter { font-size: 72px; font-weight: 700; color: var(--vs-text); text-align: center; margin: 16px 0; }
+    .actions { display: flex; gap: 8px; justify-content: center; }
   </style>
 </head>
 <body>
-  <h1 id="count">0</h1>
-  <div>
-    <button id="dec">−</button>
-    <button id="inc">+</button>
-    <button id="reset">Reset</button>
+  <script src="vessel://sdk.js"></script>
+  <div class="vs-card" style="width: 320px; text-align: center;">
+    <p class="vs-subheading" style="margin-bottom: 4px;">Storage Test</p>
+    <p class="vs-heading" style="margin-bottom: 0;">Counter</p>
+    <div class="counter" id="count">—</div>
+    <div class="actions">
+      <button class="vs-btn vs-btn-ghost vs-btn-lg" id="dec">−</button>
+      <button class="vs-btn vs-btn-ghost vs-btn-lg" id="reset">Reset</button>
+      <button class="vs-btn vs-btn-primary vs-btn-lg" id="inc">+</button>
+    </div>
+    <p class="vs-caption" style="margin-top: 12px;" id="status">Loading…</p>
   </div>
 
   <script type="module">
-    import { ready, storage } from '../../sdk/index.js'
-
-    await ready()
+    await vessel.ready
 
     const countEl = document.getElementById('count')
+    const statusEl = document.getElementById('status')
 
     async function load() {
-      const saved = await storage.get('count')
+      const saved = await vessel.storage.get('count')
       countEl.textContent = String(saved ?? 0)
+      statusEl.textContent = 'Stored in vessel.storage'
     }
 
     async function save(value) {
       countEl.textContent = String(value)
-      await storage.set('count', value)
+      await vessel.storage.set('count', value)
     }
 
     await load()
 
-    document.getElementById('inc').addEventListener('click', async () => {
-      await save(Number(countEl.textContent) + 1)
-    })
-
-    document.getElementById('dec').addEventListener('click', async () => {
-      await save(Number(countEl.textContent) - 1)
-    })
-
-    document.getElementById('reset').addEventListener('click', async () => {
-      await save(0)
-    })
+    document.getElementById('inc').addEventListener('click', () => save(Number(countEl.textContent) + 1))
+    document.getElementById('dec').addEventListener('click', () => save(Number(countEl.textContent) - 1))
+    document.getElementById('reset').addEventListener('click', () => save(0))
   </script>
 </body>
 </html>

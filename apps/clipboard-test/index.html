@@ -1,14 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Clipboard Test</title></head>
-<body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif">
-  <button id="btn" style="padding:12px 24px;font-size:16px;cursor:pointer">Copy to Clipboard</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clipboard Test</title>
+  <link rel="stylesheet" href="vessel://sdk.css" />
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <script src="vessel://sdk.js"></script>
+  <div class="vs-card" style="width: 360px;">
+    <p class="vs-heading" style="margin-bottom: 16px;">Clipboard</p>
+
+    <div class="vs-form-group" style="margin-bottom: 12px;">
+      <label class="vs-label" for="text-input">Text to write</label>
+      <textarea class="vs-textarea" id="text-input" rows="3" placeholder="Type something…">Hello from Vessel!</textarea>
+    </div>
+
+    <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+      <button class="vs-btn vs-btn-primary" id="write-btn" style="flex:1">Write</button>
+      <button class="vs-btn vs-btn-soft" id="read-btn" style="flex:1">Read</button>
+    </div>
+
+    <div class="vs-form-group">
+      <label class="vs-label">Clipboard contents</label>
+      <div id="read-result" class="vs-code" style="padding: 8px 10px; min-height: 36px; font-size: 13px;">—</div>
+    </div>
+
+    <p class="vs-caption" style="margin-top: 12px;" id="status"></p>
+  </div>
+
   <script type="module">
-    import { ready, clipboard } from '../../sdk/index.js'
-    await ready()
-    document.getElementById('btn').onclick = async () => {
-      await clipboard.write('Hello from Vessel clipboard test!')
-    }
+    await vessel.ready
+
+    const textInput = document.getElementById('text-input')
+    const readResult = document.getElementById('read-result')
+    const statusEl = document.getElementById('status')
+
+    document.getElementById('write-btn').addEventListener('click', async () => {
+      await vessel.clipboard.write(textInput.value)
+      statusEl.textContent = 'Written to clipboard.'
+    })
+
+    document.getElementById('read-btn').addEventListener('click', async () => {
+      const text = await vessel.clipboard.read()
+      readResult.textContent = text || '(empty)'
+      statusEl.textContent = 'Read from clipboard.'
+    })
   </script>
 </body>
 </html>

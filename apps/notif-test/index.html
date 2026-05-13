@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>Notification Test</title></head>
-<body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif">
-  <button id="btn" style="padding:12px 24px;font-size:16px;cursor:pointer">Send Notification</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications Test</title>
+  <link rel="stylesheet" href="vessel://sdk.css" />
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <script src="vessel://sdk.js"></script>
+  <div class="vs-card" style="width: 360px;">
+    <p class="vs-heading" style="margin-bottom: 16px;">Notifications</p>
+
+    <div class="vs-form-group" style="margin-bottom: 10px;">
+      <label class="vs-label" for="notif-title">Title</label>
+      <input class="vs-input" id="notif-title" type="text" value="Hello from Vessel!" />
+    </div>
+
+    <div class="vs-form-group" style="margin-bottom: 16px;">
+      <label class="vs-label" for="notif-body">Body</label>
+      <input class="vs-input" id="notif-body" type="text" value="This notification was sent by a cargo app." />
+    </div>
+
+    <button class="vs-btn vs-btn-primary" id="send-btn" style="width: 100%;">Send Notification</button>
+    <p class="vs-caption" style="margin-top: 12px; text-align: center;" id="status"></p>
+  </div>
+
   <script type="module">
-    import { ready, notifications } from '../../sdk/index.js'
-    await ready()
-    document.getElementById('btn').onclick = async () => {
-      await notifications.send({ title: 'Hello!', body: 'Notification test worked.' })
-    }
+    await vessel.ready
+
+    document.getElementById('send-btn').addEventListener('click', async () => {
+      const title = document.getElementById('notif-title').value
+      const body = document.getElementById('notif-body').value
+      await vessel.notifications.show(title, body)
+      document.getElementById('status').textContent = 'Notification sent.'
+    })
   </script>
 </body>
 </html>
