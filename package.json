@@ -1,6 +1,6 @@
 {
   "name": "vessel-sample",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Sample Vessel cargo",
   "type": "module",
   "private": true,
