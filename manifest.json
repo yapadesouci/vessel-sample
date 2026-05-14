@@ -6,8 +6,9 @@
   "description": "Sample cargo demonstrating the Vessel design system and SDK APIs",
   "apps": [
     { "id": "storage-test",   "name": "Storage",       "permissions": ["storage"] },
-    { "id": "network-test",   "name": "Design System", "permissions": [] },
+    { "id": "network-test",   "name": "Network",       "permissions": ["network"] },
     { "id": "notif-test",     "name": "Notifications", "permissions": ["notifications"] },
-    { "id": "clipboard-test", "name": "Clipboard",     "permissions": ["clipboard"] }
+    { "id": "clipboard-test", "name": "Clipboard",     "permissions": ["clipboard"] },
+    { "id": "toast-test",     "name": "Toast",         "permissions": ["toast"] }
   ]
 }

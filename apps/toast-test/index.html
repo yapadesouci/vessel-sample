@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toast Test</title>
+  <link rel="stylesheet" href="vessel://sdk.css" />
+  <style>
+    body { padding: 32px; }
+    .section { margin-bottom: 28px; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .custom-row { display: flex; gap: 8px; margin-top: 10px; align-items: flex-end; }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+  </style>
+</head>
+<body>
+  <script src="vessel://sdk.js"></script>
+
+  <p class="vs-heading" style="margin-bottom: 4px;">Toast</p>
+  <p class="vs-caption" style="margin-bottom: 28px;">Send toast messages to the Vessel host UI.</p>
+
+  <div class="section">
+    <p class="vs-subheading">Types</p>
+    <div class="row">
+      <button class="vs-btn vs-btn-primary" id="btn-info">Info</button>
+      <button class="vs-btn vs-btn-soft" id="btn-success">Success</button>
+      <button class="vs-btn vs-btn-ghost" id="btn-warning">Warning</button>
+      <button class="vs-btn vs-btn-danger" id="btn-error">Error</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="vs-subheading">Custom</p>
+    <div class="custom-row">
+      <div class="field">
+        <label class="vs-label" for="msg-input">Message</label>
+        <input class="vs-input" id="msg-input" placeholder="Your message…" style="width: 240px;" />
+      </div>
+      <div class="field">
+        <label class="vs-label" for="type-select">Type</label>
+        <select class="vs-select" id="type-select">
+          <option value="info">Info</option>
+          <option value="success">Success</option>
+          <option value="warning">Warning</option>
+          <option value="error">Error</option>
+        </select>
+      </div>
+      <button class="vs-btn vs-btn-primary" id="btn-send">Send</button>
+    </div>
+  </div>
+
+  <script type="module">
+    await vessel.ready()
+
+    document.getElementById('btn-info').addEventListener('click', () =>
+      vessel.toast.show('This is an info message', 'info'))
+
+    document.getElementById('btn-success').addEventListener('click', () =>
+      vessel.toast.show('Operation completed successfully!', 'success'))
+
+    document.getElementById('btn-warning').addEventListener('click', () =>
+      vessel.toast.show('Proceed with caution.', 'warning'))
+
+    document.getElementById('btn-error').addEventListener('click', () =>
+      vessel.toast.show('Something went wrong.', 'error'))
+
+    document.getElementById('btn-send').addEventListener('click', () => {
+      const message = document.getElementById('msg-input').value.trim()
+      const type = document.getElementById('type-select').value
+      if (!message) return
+      vessel.toast.show(message, type)
+    })
+  </script>
+</body>
+</html>

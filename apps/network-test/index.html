@@ -3,110 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Design System</title>
-  <link rel="stylesheet" href="vessel://sdk.css" />
+  <title>Network Test</title>
   <style>
-    body { padding: 32px; }
-    .section { margin-bottom: 32px; }
-    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #0d1117;
+      color: #e5e7eb;
+      font-family: -apple-system, sans-serif;
+    }
+    button {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #5865f2;
+      color: white;
+    }
+    button:hover { background: #4752c4; }
+    button:disabled { opacity: 0.5; cursor: default; }
+    #joke {
+      margin-top: 32px;
+      max-width: 400px;
+      text-align: center;
+      font-size: 14px;
+      color: #9ca3af;
+      min-height: 40px;
+    }
   </style>
 </head>
 <body>
   <script src="vessel://sdk.js"></script>
-
-  <p class="vs-heading" style="margin-bottom: 4px;">Design System</p>
-  <p class="vs-caption" id="theme-label" style="margin-bottom: 28px;">Loading…</p>
-
-  <!-- Buttons -->
-  <div class="section">
-    <p class="vs-subheading">Buttons</p>
-    <div class="row">
-      <button class="vs-btn vs-btn-primary">Primary</button>
-      <button class="vs-btn vs-btn-soft">Soft</button>
-      <button class="vs-btn vs-btn-ghost">Ghost</button>
-      <button class="vs-btn vs-btn-danger">Danger</button>
-      <button class="vs-btn vs-btn-primary vs-btn-sm">Small</button>
-      <button class="vs-btn vs-btn-primary vs-btn-lg">Large</button>
-      <button class="vs-btn vs-btn-primary" disabled>Disabled</button>
-    </div>
-  </div>
-
-  <!-- Badges -->
-  <div class="section">
-    <p class="vs-subheading">Badges</p>
-    <div class="row">
-      <span class="vs-badge">Default</span>
-      <span class="vs-badge vs-badge-success">Success</span>
-      <span class="vs-badge vs-badge-warning">Warning</span>
-      <span class="vs-badge vs-badge-danger">Danger</span>
-      <span class="vs-badge vs-badge-info">Info</span>
-    </div>
-  </div>
-
-  <!-- Inputs -->
-  <div class="section">
-    <p class="vs-subheading">Form</p>
-    <div style="max-width: 360px; display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-      <div class="vs-form-group">
-        <label class="vs-label" for="demo-input">Input</label>
-        <input class="vs-input" id="demo-input" placeholder="Type something…" />
-        <span class="vs-hint">This is a hint message</span>
-      </div>
-      <div class="vs-form-group">
-        <label class="vs-label" for="demo-select">Select</label>
-        <select class="vs-select" id="demo-select">
-          <option>Option A</option>
-          <option>Option B</option>
-          <option>Option C</option>
-        </select>
-      </div>
-      <div class="vs-form-group">
-        <label class="vs-label" for="demo-textarea">Textarea</label>
-        <textarea class="vs-textarea" id="demo-textarea" placeholder="Multiline…" rows="2"></textarea>
-        <span class="vs-error">Example error message</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Table -->
-  <div class="section">
-    <p class="vs-subheading">Table</p>
-    <div style="margin-top: 10px;">
-      <table class="vs-table">
-        <thead>
-          <tr><th>Name</th><th>Status</th><th>Version</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>sample-dist</td><td><span class="vs-badge vs-badge-success">Active</span></td><td>1.1.2</td></tr>
-          <tr><td>another-cargo</td><td><span class="vs-badge vs-badge-warning">Pending</span></td><td>0.3.0</td></tr>
-          <tr><td>old-cargo</td><td><span class="vs-badge">Inactive</span></td><td>1.0.0</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Typography -->
-  <div class="section">
-    <p class="vs-subheading">Typography</p>
-    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
-      <p class="vs-heading" style="margin:0">Heading</p>
-      <p class="vs-subheading" style="margin:0">Subheading</p>
-      <p class="vs-caption" style="margin:0">Caption text</p>
-      <code class="vs-code">vessel.storage.get('key')</code>
-    </div>
-  </div>
+  <button id="joke-btn">Fetch a joke</button>
+  <p id="joke"></p>
 
   <script type="module">
-    await vessel.ready
+    await vessel.ready()
 
-    function updateLabel() {
-      const theme = document.documentElement.dataset.theme ?? '—'
-      const accent = document.documentElement.dataset.accent ?? '—'
-      document.getElementById('theme-label').textContent = `Theme: ${theme} · Accent: ${accent}`
-    }
+    const jokeEl = document.getElementById('joke')
+    const jokeBtn = document.getElementById('joke-btn')
 
-    updateLabel()
-    vessel.onThemeChange(updateLabel)
+    jokeBtn.addEventListener('click', async () => {
+      jokeBtn.disabled = true
+      jokeEl.textContent = 'Loading…'
+      try {
+        const res = await vessel.http.fetch('https://icanhazdadjoke.com/', {
+          headers: { Accept: 'application/json' },
+        })
+        const data = JSON.parse(res.body)
+        jokeEl.textContent = data.joke
+      } catch (e) {
+        jokeEl.textContent = `Error: ${e.message}`
+      } finally {
+        jokeBtn.disabled = false
+      }
+    })
   </script>
 </body>
 </html>
